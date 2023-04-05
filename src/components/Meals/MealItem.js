@@ -1,10 +1,21 @@
 import React from "react";
 import "./MealItem.css";
 import MealItemForm from "./MealItemForm";
+import { useCart } from "../../store/CartProvider";
 
 const MealItem = (props) => {
   const price = `₹${props.price.toFixed(2)}`;
 
+  const cartCtx = useCart();
+
+  const addToCartHandler = (amount) => {
+    cartCtx.addItem({
+      id: props.id,
+      name: props.name,
+      amount: +amount,
+      price: props.price,
+    });
+  };
   return (
     <li className="meal">
       <div>
@@ -14,7 +25,7 @@ const MealItem = (props) => {
         <div className="price">{price}</div>
       </div>
       <div>
-        <MealItemForm mealId={props.id} />
+        <MealItemForm mealId={props.id} addEnteredAmount={addToCartHandler} />
       </div>
     </li>
   );
