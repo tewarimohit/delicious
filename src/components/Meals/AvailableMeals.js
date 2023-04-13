@@ -7,23 +7,34 @@ import Loader from "../UI/Loader";
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState();
+
   useEffect(() => {
     const fetchMeals = async () => {
       setIsLoading(true);
-      const response = await fetch(
-        "https://custom-hook-a663f-default-rtdb.firebaseio.com/meals.json"
-      );
-      const data = await response.json();
-      const loadedData = [];
-      for (let key in data) {
-        loadedData.push({
-          id: key,
-          name: data[key].name,
-          description: data[key].description,
-          price: data[key].price,
-        });
+
+      try {
+        const response = await fetch(
+          "https://custom-hook-a663f-default-rtdb.firebaseio.com/meals.json"
+        );
+
+        if (!response.ok) {
+          throw new Error("Something went wrong!!");
+        }
+        const data = await response.json();
+        const loadedData = [];
+        for (let key in data) {
+          loadedData.push({
+            id: key,
+            name: data[key].name,
+            description: data[key].description,
+            price: data[key].price,
+          });
+        }
+        setMeals(loadedData);
+      } catch (err) {
+        setHasError(err.message);
       }
-      setMeals(loadedData);
       setIsLoading(false);
     };
 
@@ -44,6 +55,13 @@ const AvailableMeals = () => {
     return (
       <section className="loader">
         <Loader />
+      </section>
+    );
+  }
+  if (hasError) {
+    return (
+      <section className="loader">
+        <p className="has-error">{hasError}</p>
       </section>
     );
   }

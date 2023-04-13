@@ -16,6 +16,14 @@
     display: flex;
     justify-content: center;
   }
+
+  .has-error{
+    padding: .5rem;
+    font-size: inherit;
+    font-weight: inherit;
+   border-radius: 4px;
+    color: white;
+  }
   
   @keyframes meals-appear {
     from {
