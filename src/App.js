@@ -17,7 +17,7 @@ function App() {
 
   return (
     <CartProvider>
-      {isCartVisible && <Cart onClick={hideCartHandler} />}
+      {isCartVisible && <Cart onClose={hideCartHandler} />}
       <Header onClick={showCartHandler} />
       <main>
         <Meals />
